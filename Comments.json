@@ -1,0 +1,576 @@
+{
+  "info": {
+    "_postman_id": "b4c5071a-1e4e-4173-a50f-687a4765527e",
+    "name": "Comments",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54039261",
+    "_collection_link": "https://go.postman.co/collection/54039261-b4c5071a-1e4e-4173-a50f-687a4765527e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GetAllComments",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"The data is displayed GET Request Succeessful\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "pm.test(\"Response time is less than 300ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+              "});\r",
+              "let pages = pm.response.headers.get(\"x-pagination-pages\");\r",
+              "\r",
+              "pm.test(\"Total Pages = \" + pages, function () {\r",
+              "    pm.expect(pages).to.not.be.undefined;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://gorest.co.in/public/v2/comments",
+          "protocol": "https",
+          "host": [
+            "gorest",
+            "co",
+            "in"
+          ],
+          "path": [
+            "public",
+            "v2",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CreateNewComment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let responseData=pm.response.json();\r",
+              "\r",
+              "pm.environment.set(\"comment_id\", responseData.id);\r",
+              "let initialpostdata=JSON.parse(pm.request.body.raw);\r",
+              "pm.environment.set(\"initialcommentinfo\",JSON.stringify(initialpostdata));\r",
+              "\r",
+              "\r",
+              "\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": " {\r\n     \r\n        \"post_id\": 279309,\r\n        \"name\": \"Ananta annata annata\",\r\n        \"email\": \"ramaiya@vastvaiya\",\r\n        \"body\": \"random(20)\"\r\n    }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://gorest.co.in/public/v2/comments",
+          "protocol": "https",
+          "host": [
+            "gorest",
+            "co",
+            "in"
+          ],
+          "path": [
+            "public",
+            "v2",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetMyCreatedComment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let storedData = JSON.parse(pm.environment.get(\"initialcommentinfo\"));",
+              "let responseData = pm.response.json();",
+              "",
+              "pm.test(\"Post data exists in GET response\", function () {",
+              " ",
+              "    pm.expect(responseData.name).to.eql(storedData.name);",
+              "    pm.expect(responseData.body).to.eql(storedData.body);",
+              "});",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://gorest.co.in/public/v2/comments/{{comment_id}}",
+          "protocol": "https",
+          "host": [
+            "gorest",
+            "co",
+            "in"
+          ],
+          "path": [
+            "public",
+            "v2",
+            "comments",
+            "{{comment_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PutMyComment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "let putdata=JSON.parse(pm.request.body.raw);\r",
+              "pm.environment.set(\"initialputdata\",JSON.stringify(putdata));\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": " {\r\n      \r\n        \"name\": \"Ananta Khatri\",\r\n        \"email\": \"ananta_khatri@ratke-bergstrom.test\",\r\n        \"body\": \"Quisquam rerum voluptatibus. Velit tempora atque. Molestiae voluptatibus numquam. Incidunt assumenda est.\"\r\n    }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://gorest.co.in/public/v2/comments/{{comment_id}}",
+          "protocol": "https",
+          "host": [
+            "gorest",
+            "co",
+            "in"
+          ],
+          "path": [
+            "public",
+            "v2",
+            "comments",
+            "{{comment_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetMyCommentAfterPut",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "let putstoreddata = JSON.parse(pm.environment.get(\"initialputdata\"));",
+              "let stringdata = JSON.stringify(putstoreddata);",
+              "let responseput = pm.response.json();",
+              "pm.test(\"Put data exactly matches Get data\" + stringdata, function () {",
+              "    pm.expect(responseput.name).to.eql(putstoreddata.name);",
+              "    pm.expect(responseput.body).to.eql(putstoreddata.body);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://gorest.co.in/public/v2/comments/{{comment_id}}",
+          "protocol": "https",
+          "host": [
+            "gorest",
+            "co",
+            "in"
+          ],
+          "path": [
+            "public",
+            "v2",
+            "comments",
+            "{{comment_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PatchMyComment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "let patchdata=JSON.parse(pm.request.body.raw);\r",
+              "pm.environment.set(\"patcheddata\",JSON.stringify(patchdata));\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": " {\r\n      \r\n        \"name\": \"RAMAMAMAMAMAMAAMAMAMAMAMAMAMAMA\"\r\n       \r\n    }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://gorest.co.in/public/v2/comments/{{comment_id}}",
+          "protocol": "https",
+          "host": [
+            "gorest",
+            "co",
+            "in"
+          ],
+          "path": [
+            "public",
+            "v2",
+            "comments",
+            "{{comment_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetMyCommentAfterPatch",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "let patcheddata = JSON.parse(pm.environment.get(\"patcheddata\"));",
+              "let stringpatcheddata = JSON.stringify(patcheddata);",
+              "let responseafterpatch = pm.response.json();",
+              "pm.test(\"Patch data exactly matches Get data\" + stringpatcheddata, function () {",
+              "    pm.expect(responseafterpatch.name).to.eql(patcheddata.name);",
+              "   ",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://gorest.co.in/public/v2/comments/{{comment_id}}",
+          "protocol": "https",
+          "host": [
+            "gorest",
+            "co",
+            "in"
+          ],
+          "path": [
+            "public",
+            "v2",
+            "comments",
+            "{{comment_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteMyComment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "\r",
+              "pm.test(\"Delete successful\", function () {\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204,404]);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "packages": {},
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://gorest.co.in/public/v2/comments/{{comment_id}}",
+          "protocol": "https",
+          "host": [
+            "gorest",
+            "co",
+            "in"
+          ],
+          "path": [
+            "public",
+            "v2",
+            "comments",
+            "{{comment_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetDeletedComment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"The data was just deleted\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://gorest.co.in/public/v2/comments/{{comment_id}}",
+          "protocol": "https",
+          "host": [
+            "gorest",
+            "co",
+            "in"
+          ],
+          "path": [
+            "public",
+            "v2",
+            "comments",
+            "{{comment_id}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
